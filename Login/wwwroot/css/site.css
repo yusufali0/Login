@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
 html {
     height: 100%;
 }
@@ -7,7 +8,11 @@ body {
     padding: 0;
     font-family: sans-serif;
     background: linear-gradient(#141e30, #243b55);
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    position: relative;
 }
+
 
 .login-box {
     position: absolute;
@@ -98,6 +103,7 @@ body {
             background: linear-gradient(90deg, transparent, #03e9f4);
             animation: btn-anim1 1s linear infinite;
         }
+
 
 @keyframes btn-anim1 {
     0% {
@@ -255,9 +261,11 @@ body {
 
 
 .button-wrapper {
+    
     position: relative;
     width: 150px;
     text-align: center;
     margin: 20% auto;
 }
+
     

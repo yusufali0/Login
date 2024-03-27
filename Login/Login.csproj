@@ -6,4 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\js\fact.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\fact.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\fact.js" />
+  </ItemGroup>
+
 </Project>

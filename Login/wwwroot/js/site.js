@@ -10,33 +10,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function sendMessage() {
-    var userInput = document.getElementById('userInput').value;
-    var chatMessages = document.getElementById('chatMessages');
+//function sendMessage() {
+//    var userInput = document.getElementById('userInput').value;
+//    var chatMessages = document.getElementById('chatMessages');
 
-    var userMessage = document.createElement('div');
-    userMessage.className = 'message user';
-    userMessage.textContent = 'You: ' + userInput;
-    chatMessages.appendChild(userMessage);
+//    var userMessage = document.createElement('div');
+//    userMessage.className = 'message user';
+//    userMessage.textContent = 'You: ' + userInput;
+//    chatMessages.appendChild(userMessage);
 
-    var aiMessage = document.createElement('div');
-    aiMessage.className = 'message ai';
-    aiMessage.textContent = 'AI: ' + solveHealth(userInput);
-    chatMessages.appendChild(aiMessage);
+//    var aiMessage = document.createElement('div');
+//    aiMessage.className = 'message ai';
+//    aiMessage.textContent = 'AI: ' + solveHealth(userInput);
+//    chatMessages.appendChild(aiMessage);
 
-    // Scroll to bottom of chat messages
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+//    // Scroll to bottom of chat messages
+//    chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // Clear user input field
-    document.getElementById('userInput').value = '';
-}
+//    // Clear user input field
+//    document.getElementById('userInput').value = '';
+//}
 
-function solveHealth(question) {
-    try {
-        var equation = question.replace(/[^-()\d/*+.]/g, ''); 
-        var result = eval(equation);
-        return 'The result is ' + result + '.';
-    } catch (error) {
-        return 'Sorry, I couldn\'t solve the equation.';
-    }
-}
+
+//function solveHealth(question) {
+    
+//    fetch('https://aigency.dev/api/v1/my-chats?access_token=a08e0786df6f4e8f')
+//        .then(response => response.json())
+//        .then(data => {
+//            // API'den gelen verileri kullan
+//            console.log(data);
+//        })
+//        .catch(error => {
+//            // Hata durumunda işlemler
+//            console.error('Error fetching data:', error);
+//        });
+
+//}
+

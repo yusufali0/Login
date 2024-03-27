@@ -1,4 +1,47 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewBag.Title = "Genius";
+}
+
+
+<div>
+    <h2>API'den Alınan Veri:</h2>
+    <textarea id="api-data" rows="10" cols="50"></textarea>
+    <br />
+    <input type="text" id="message" placeholder="Mesajınızı girin">
+    <button id="send-button">API İsteği Gönder</button>
+</div>
+
+<script>
+   
+    // Butona tıklama olayını dinle
+    document.getElementById("send-button").addEventListener("click", function () {
+        // Kullanıcının girdiği mesajı al
+        var message = document.getElementById("message").value;
+
+        // API isteğini başlat
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SendMessage", "Home")",
+            data: { message: message },
+            success: function (response) {
+                if (response.success) {
+                    // Başarılı yanıt alındığında veriyi göster
+                    $("#api-data").val(response.data);
+                } else {
+                    // Hata mesajını göster
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                // Hata durumunda genel bir hata mesajı göster
+                alert("API isteği sırasında bir hata oluştu.");
+            }
+        });
+    });
+</script>
+
+
+@* <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,28 +52,21 @@
 <body>
     <div class="chat-container">
         <div class="chat-header">Health AI</div>
-        <div class="chat-messages" id="chatMessages"></div>
-
-
+        <div class="chat-messages" id="chatMessages">
+            
+        </div>
         <div class="chat-input">
             <input type="text" id="userInput" placeholder="Type a health question...">
             <br />
-     
-            <button onclick="sendMessage()">Send</button>
-            
+            <br />
+            <button onclick="sendMessage()">GÖNDER</button>
             <span class="label">
                 Upload File
             </span>
-
             <input type="file" name="upload" id="upload" class="upload-box" placeholder="Upload File">
-            
-        
         </div>
-
-
     </div>
-
-
     <script src="script.js"></script>
 </body>
 </html>
+ *@
