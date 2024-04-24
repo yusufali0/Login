@@ -1,6 +1,8 @@
 using Login.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Text;
 
 namespace Login.Controllers
 {
@@ -34,38 +36,74 @@ namespace Login.Controllers
         {
             try
             {
-                // API adresi
-                string apiUrl = "https://aigency.dev/api/v1/my-chats?access_token=a08e0786df6f4e8f";
+                // API URL
+                var loginApiUrl = "https://aigency.dev/api/v1/login/";
 
-                // Gönderilecek veri (kullanýcýdan alýnan)
-                string postData = "{\"message\": \"" + message + "\"}";
-
-                // JSON verisini StringContent olarak ayarla
-                StringContent content = new StringContent(postData, System.Text.Encoding.UTF8, "application/json");
-
-                // HttpClient oluþtur
-                using (HttpClient client = new HttpClient())
+                // Login form data
+                var loginFormData = new FormUrlEncodedContent(new[]
                 {
-                    // POST isteði gönder
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+                 new KeyValuePair<string, string>("email", "yusuf2979@gmail.com"),
+                new KeyValuePair<string, string>("password", "63634488yY")
+                });
 
-                    // Yanýt kontrolü
-                    if (response.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
+                {
+                    // Login isteði
+                    var loginResponse = await httpClient.PostAsync(loginApiUrl, loginFormData);
+
+                    if (!loginResponse.IsSuccessStatusCode)
                     {
-                        // Yanýt baþarýlý ise veriyi al
-                        string responseData = await response.Content.ReadAsStringAsync();
-                        return Json(new { success = true, data = responseData });
+                        Console.WriteLine($"Login Error: {loginResponse.StatusCode}");
+                        return Content($"Login Error: {loginResponse.StatusCode}");
+                    }
+
+                    var loginContent = await loginResponse.Content.ReadAsStringAsync();
+                    
+
+                    var loginJson = JObject.Parse(loginContent);
+
+                    var accessToken = loginJson["access_token"]?.ToString();
+
+                    if (string.IsNullOrEmpty(accessToken))
+                    {
+                        Console.WriteLine("Error parsing access_token.");
+                        return Content("Error parsing access_token.");
+                    }
+
+                    // SendMessage API URL
+                    var sendMessageApiUrl = "https://aigency.dev/api/v1/sendMessage";
+
+                    // SendMessage form data
+                    var sendMessageFormData = new FormUrlEncodedContent(new[]
+                    {
+                    new KeyValuePair<string, string>("access_token", "a08e0786df6f4e8f"),  
+                    new KeyValuePair<string, string>("chat_id", "thread_66108518b8e5a1.18914117"),
+                    new KeyValuePair<string, string>("message", message) 
+                    });
+
+                    // SendMessage isteði
+                    var sendMessageResponse = await httpClient.PostAsync(sendMessageApiUrl, sendMessageFormData);
+
+                    if (sendMessageResponse.IsSuccessStatusCode)
+                    {
+                        var sendMessageContent = await sendMessageResponse.Content.ReadAsStringAsync();
+                        return Content(sendMessageContent);
                     }
                     else
                     {
-                        return Json(new { success = false, message = "API isteði baþarýsýz. Status Code: " + response.StatusCode });
+                        Console.WriteLine($"SendMessage Error: {sendMessageResponse.StatusCode}");
+                        return Content($"SendMessage Error: {sendMessageResponse.StatusCode}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Hata oluþtu: " + ex.Message });
+                Console.WriteLine($"Error: {ex.Message}");
+                return Content($"Error: {ex.Message}");
             }
+
+
         }
     }
 }
+

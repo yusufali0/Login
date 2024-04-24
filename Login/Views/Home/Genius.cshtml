@@ -2,7 +2,190 @@
     ViewBag.Title = "Genius";
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Message</title>
+</head>
+<body>
 
+    <h1>Chat Box</h1>
+
+    <div id="chatBox" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;">
+    </div>
+
+    <form id="sendMessageForm">
+        <label for="message">Message:</label><br>
+        <input type="text" id="message" name="message"><br><br>
+        <button type="button" onclick="sendMessage()">Send</button>
+    </form>
+
+    <script>
+        async function sendMessage() {
+            const message = document.getElementById("message").value;
+            const apiUrl = "/Home/SendMessage";
+
+            // Gönderilen mesajı ilk olarak chatbox'ta gösterelim.
+            appendMessage(`You: ${message}`, 'sent');
+
+            const formData = new URLSearchParams();
+            formData.append("message", message);
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+                    body: formData
+                });
+
+                const responseData = await response.json();
+
+                if (response.ok && responseData.status) {
+                    const botMessage = responseData.answer.message;
+                    appendMessage(`Bot: ${botMessage}`, 'response');
+                } else {
+                    appendMessage(`Bot Error: ${responseData.answer.message}`, 'error');
+                }
+            } catch (error) {
+                appendMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function appendMessage(message, type) {
+            const chatBox = document.getElementById("chatBox");
+            const messageElement = document.createElement("div");
+
+            messageElement.textContent = message;
+
+            switch (type) {
+                case 'sent':
+                    messageElement.style.color = 'blue';
+                    break;
+                case 'response':
+                    messageElement.style.color = 'green';
+                    break;
+                case 'error':
+                    messageElement.style.color = 'red';
+                    break;
+                default:
+                    messageElement.style.color = 'black';
+            }
+
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+
+
+
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @{
+    ViewBag.Title = "Genius";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Message</title>
+</head>
+<body>
+
+    <h1>Chat Box</h1>
+
+    <div id="chatBox" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;">
+        <!-- Chat messages will be displayed here -->
+    </div>
+
+    <form id="sendMessageForm">
+        <label for="message">Message:</label><br>
+        <input type="text" id="message" name="message"><br><br>
+        <button type="button" onclick="sendMessage()">Send</button>
+    </form>
+
+    <script>
+        async function sendMessage() {
+            const message = document.getElementById("message").value;
+            const apiUrl = "/Home/SendMessage"; // HomeController adınıza göre değiştirin
+
+            const formData = new URLSearchParams();
+            formData.append("message", message);
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.text();
+                    appendMessage(data, 'response');
+                } else {
+                    appendMessage(`Error: ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                appendMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function appendMessage(message, type) {
+            const chatBox = document.getElementById("chatBox");
+            const messageElement = document.createElement("div");
+
+            messageElement.textContent = message;
+
+            if (type === 'response') {
+                messageElement.style.color = 'green';
+            } else if (type === 'error') {
+                messageElement.style.color = 'red';
+            }
+
+            chatBox.appendChild(messageElement);
+
+            // Scroll chat box to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
+ *@
+
+
+
+
+
+@* 
 <div>
     <h2>API'den Alınan Veri:</h2>
     <textarea id="api-data" rows="10" cols="50"></textarea>
@@ -39,7 +222,7 @@
         });
     });
 </script>
-
+ *@
 
 @* <!DOCTYPE html>
 <html lang="en">
